@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
     fun eliminar(id:String)
     {
         val stringRequest=object : StringRequest(
-            Method.POST,"http://ventas.ibx.lat/deleteproducto.php", Response.Listener {
+            Method.POST,"https://ventas.ibx.lat/deleteproducto.php", Response.Listener {
                     response ->
-                   Toast.makeText(baseContext,response.toString(),Toast.LENGTH_SHORT).show()
+                   Toast.makeText(baseContext,"Eliminado",Toast.LENGTH_SHORT).show()
 
             },
             Response.ErrorListener {
@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     fun data()
     {
 
-        var request = JsonArrayRequest("http://ventas.ibx.lat/productos.php",
+        var request = JsonArrayRequest("https://ventas.ibx.lat/productos.php",
             Response.Listener<JSONArray> { response ->
 
 

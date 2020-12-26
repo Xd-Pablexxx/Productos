@@ -79,7 +79,7 @@ class Registrar : AppCompatActivity(), TextWatcher {
             {
                 progreso.visibility=View.VISIBLE
                 val stringRequest=object : StringRequest(
-                    Method.POST,"http://ventas.ibx.lat/createproducto.php", Response.Listener {
+                    Method.POST,"https://ventas.ibx.lat/createproducto.php", Response.Listener {
                             response ->
                         id=response.toString()
 
@@ -102,12 +102,12 @@ class Registrar : AppCompatActivity(), TextWatcher {
 
                 }
                 val string1Request=object : StringRequest(
-                    Method.POST,"http://ventas.ibx.lat/createproducto_img.php", Response.Listener {
+                    Method.POST,"https://ventas.ibx.lat/createproducto_img.php", Response.Listener {
                             response ->
                         Toast.makeText(this,response.toString(), Toast.LENGTH_SHORT).show()
                     },
                     Response.ErrorListener {
-                        Toast.makeText(this,it.toString(), Toast.LENGTH_SHORT).show()
+
                     })
                 {
                     override fun getParams(): MutableMap<String, String> {
@@ -121,17 +121,26 @@ class Registrar : AppCompatActivity(), TextWatcher {
                 }
                 val queQue= Volley.newRequestQueue(this)
                 queQue.add(stringRequest)
-                val que=Volley.newRequestQueue(this)
-                string1Request.retryPolicy =
-                    DefaultRetryPolicy(
-                        30000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                    )
-                que.add(string1Request)
-                que.addRequestFinishedListener(object:RequestQueue.RequestFinishedListener<String> {
+                queQue.addRequestFinishedListener(object :
+                    RequestQueue.RequestFinishedListener<String> {
                     override fun onRequestFinished(request: Request<String?>?) {
-                        progreso.visibility=View.GONE
+                        val que = Volley.newRequestQueue(baseContext)
+                        string1Request.retryPolicy =
+                            DefaultRetryPolicy(
+                                30000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                            )
+
+
+                        que.add(string1Request)
+                        //Cuando acabe la solicitud desaparece el progressbar
+                        que.addRequestFinishedListener(object :
+                            RequestQueue.RequestFinishedListener<String> {
+                            override fun onRequestFinished(request: Request<String?>?) {
+                                progreso.visibility = View.GONE
+                            }
+                        })
                     }
                 })
             }
@@ -164,6 +173,7 @@ class Registrar : AppCompatActivity(), TextWatcher {
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
         val imageByte=outputStream.toByteArray()
         val encodeImageView= Base64.encodeToString(imageByte, Base64.DEFAULT)
+        Log.i("infor",encodeImageView)
         return encodeImageView
     }
 

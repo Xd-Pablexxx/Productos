@@ -64,8 +64,9 @@ class AdapterProducto: RecyclerView.Adapter<AdapterProducto.MyviewHolder>(), Fil
                 context.startActivity(intent)
             }
         //----------Uso de la libreria Glide  para visualizar la imagen en el CircleImagenView desde una Url y tambien las opciones de no guardar en la cache
-            Glide.with(context).load("http://ventas.ibx.lat/Img/${producto.id}.png").diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).into(img_producto)
+         Glide.with(context).load("https://ventas.ibx.lat/Img/${producto.id}.png").diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true).into(img_producto)
+          //  Glide.with(context).load("https://ventas.ibx.lat/Img/${producto.id}.png").into(img_producto)
         //-----------------------------------------
         }
     }

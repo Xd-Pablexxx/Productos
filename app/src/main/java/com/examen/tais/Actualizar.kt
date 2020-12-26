@@ -60,7 +60,7 @@ class Actualizar : AppCompatActivity(), TextWatcher {
         //------------------ Cargamos la imagen del producto desde la url
         Glide
             .with(this).asBitmap()
-            .load("http://ventas.ibx.lat/Img/${id}.png").diskCacheStrategy(DiskCacheStrategy.NONE)
+            .load("https://ventas.ibx.lat/Img/${id}.png").diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
             .into(object : SimpleTarget<Bitmap?>() {
                 override fun onResourceReady(
@@ -117,7 +117,7 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                 progreso.visibility = View.VISIBLE//mostramos el progressbar
                 val stringRequest = object : StringRequest(
                     Method.POST,
-                    "http://ventas.ibx.lat/updateproducto.php",
+                    "https://ventas.ibx.lat/updateproducto.php",
                     Response.Listener { response ->
 
 
@@ -141,12 +141,12 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                 }
                 val string1Request = object : StringRequest(
                     Method.POST,
-                    "http://ventas.ibx.lat/updateproducto_img.php",
+                    "https://ventas.ibx.lat/updateproducto_img.php",
                     Response.Listener { response ->
                         Toast.makeText(this, response.toString(), Toast.LENGTH_SHORT).show()
                     },
                     Response.ErrorListener {
-                        Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+
                     }) {
                     override fun getParams(): MutableMap<String, String> {
                         val params = HashMap<String, String>()
@@ -160,15 +160,29 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                 }
                 val queQue = Volley.newRequestQueue(this)
                 queQue.add(stringRequest)
-                val que = Volley.newRequestQueue(this)
-                que.add(string1Request)
-                //Cuando acabe la solicitud desaparece el progressbar
-                que.addRequestFinishedListener(object :
+                queQue.addRequestFinishedListener(object :
                     RequestQueue.RequestFinishedListener<String> {
                     override fun onRequestFinished(request: Request<String?>?) {
-                        progreso.visibility = View.GONE
+                        val que = Volley.newRequestQueue(baseContext)
+                        string1Request.retryPolicy =
+                            DefaultRetryPolicy(
+                                30000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                            )
+
+
+                        que.add(string1Request)
+                        //Cuando acabe la solicitud desaparece el progressbar
+                        que.addRequestFinishedListener(object :
+                            RequestQueue.RequestFinishedListener<String> {
+                            override fun onRequestFinished(request: Request<String?>?) {
+                                progreso.visibility = View.GONE
+                            }
+                        })
                     }
-                })
+                    })
+
             }
             //queQue.add(string1Request)
         }
