@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/Contenedor"
+    android:background="@drawable/fondo"
+    android:layout_height="110dp">
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:id="@+id/img_producto"
+            android:layout_height="match_parent"
+            app:civ_border_width="0.4dp"
+            app:civ_border_color="#B3B0B0"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_producto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/archivo_black"
+            android:gravity="center"
+            android:text="Piña"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_categoria"
+            android:fontFamily="sans-serif-light"
+            android:textSize="23sp"
+            android:text="Categoria"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_precio"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:drawableLeft="@drawable/ic_money_bag"
+                android:drawablePadding="5dp"
+                android:text="Precio: 4.50">
+
+            </TextView>
+            <TextView
+
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_packages"
+                android:textSize="15sp"
+                android:drawablePadding="5dp"
+                android:id="@+id/txt_stock"
+                android:text="Stock: 4">
+
+            </TextView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
