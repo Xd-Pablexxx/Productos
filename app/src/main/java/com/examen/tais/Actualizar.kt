@@ -151,12 +151,6 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                 val queQue = Volley.newRequestQueue(this)
                 queQue.add(stringRequest)
                 val que = Volley.newRequestQueue(this)
-                string1Request.retryPolicy =
-                    DefaultRetryPolicy(
-                        30000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-                    )
                 que.add(string1Request)
                 que.addRequestFinishedListener(object :
                     RequestQueue.RequestFinishedListener<String> {

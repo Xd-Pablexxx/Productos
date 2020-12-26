@@ -11,6 +11,7 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -121,6 +122,12 @@ class Registrar : AppCompatActivity(), TextWatcher {
                 val queQue= Volley.newRequestQueue(this)
                 queQue.add(stringRequest)
                 val que=Volley.newRequestQueue(this)
+                string1Request.retryPolicy =
+                    DefaultRetryPolicy(
+                        30000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+                    )
                 que.add(string1Request)
                 que.addRequestFinishedListener(object:RequestQueue.RequestFinishedListener<String> {
                     override fun onRequestFinished(request: Request<String?>?) {
