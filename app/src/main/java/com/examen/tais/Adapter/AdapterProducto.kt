@@ -17,7 +17,7 @@ import com.examen.tais.R
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.Serializable
 
-
+// Clase producto
 data class Producto(
     val id: String,
     val producto: String,
@@ -25,6 +25,8 @@ data class Producto(
     val precio: Float,
     val stock: Int
 ):Serializable
+
+//----------------------
 class AdapterProducto: RecyclerView.Adapter<AdapterProducto.MyviewHolder>(), Filterable {
     private lateinit var context: Context
         var datos:MutableList<Producto> =  ArrayList()
@@ -61,10 +63,10 @@ class AdapterProducto: RecyclerView.Adapter<AdapterProducto.MyviewHolder>(), Fil
                 intent.putExtras(bundle)
                 context.startActivity(intent)
             }
-
+        //----------Uso de la libreria Glide  para visualizar la imagen en el CircleImagenView desde una Url y tambien las opciones de no guardar en la cache
             Glide.with(context).load("http://ventas.ibx.lat/Img/${producto.id}.png").diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true).into(img_producto)
-
+        //-----------------------------------------
         }
     }
 
@@ -88,6 +90,7 @@ class AdapterProducto: RecyclerView.Adapter<AdapterProducto.MyviewHolder>(), Fil
     }
 
     override fun getItemCount() =datos.size
+            // se implementa el filtro de busquedad personalisado , donde buscara por la descripcion del producto
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
@@ -118,5 +121,6 @@ class AdapterProducto: RecyclerView.Adapter<AdapterProducto.MyviewHolder>(), Fil
 
         }
     }
+    //------------------------------------------
 
 }

@@ -57,6 +57,7 @@ class Actualizar : AppCompatActivity(), TextWatcher {
         Stock.setText(producto.stock.toString())
 
         id = producto.id
+        //------------------ Cargamos la imagen del producto desde la url
         Glide
             .with(this).asBitmap()
             .load("http://ventas.ibx.lat/Img/${id}.png").diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -70,11 +71,17 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                     bitmap1 = resource
                 }
             })
+
+        //------------
+        //------------ se implementa un interface, cada vez que se escriba algo desaparesca el error
         Categoria.addTextChangedListener(this)
         Descripcion.addTextChangedListener(this)
         Precio.addTextChangedListener(this)
         Stock.addTextChangedListener(this)
+        //------------------------------------------
 
+
+        //elegimos la imagen en nuestra unidad
         elegir.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
@@ -84,7 +91,10 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                 PICK_IMAGE_REQUEST
             )
         }
+        //Enviar la solicitud para actualizar datos
         enviar.setOnClickListener{
+
+            // Verificar que los datos no esten vacios si no saldran error para cada Atributo
             if(Categoria.text.toString()=="")
             {
                 Categoria_layout.error="Error en Categoria"
@@ -104,7 +114,7 @@ class Actualizar : AppCompatActivity(), TextWatcher {
             else {
 
 
-                progreso.visibility = View.VISIBLE
+                progreso.visibility = View.VISIBLE//mostramos el progressbar
                 val stringRequest = object : StringRequest(
                     Method.POST,
                     "http://ventas.ibx.lat/updateproducto.php",
@@ -119,7 +129,7 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                     override fun getParams(): MutableMap<String, String> {
                         val params = HashMap<String, String>()
 
-                        //params.put("img",valor)
+                        //le pasamos los Id y datos para enviar con la solicitud
                         params.put("Categoria", Categoria.text.toString())
                         params.put("Descripcion", Descripcion.text.toString())
                         params.put("Precio", Precio.text.toString())
@@ -152,6 +162,7 @@ class Actualizar : AppCompatActivity(), TextWatcher {
                 queQue.add(stringRequest)
                 val que = Volley.newRequestQueue(this)
                 que.add(string1Request)
+                //Cuando acabe la solicitud desaparece el progressbar
                 que.addRequestFinishedListener(object :
                     RequestQueue.RequestFinishedListener<String> {
                     override fun onRequestFinished(request: Request<String?>?) {
@@ -180,6 +191,8 @@ class Actualizar : AppCompatActivity(), TextWatcher {
             }
         }
     }
+
+    // Convierte una bitmap en un string,esto permitira enviar un foto como un string  en Base64
     fun imageToString(bitmap: Bitmap):String{
         val outputStream= ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);

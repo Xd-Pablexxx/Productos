@@ -17,9 +17,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.examen.tais.Adapter.AdapterProducto
 import com.examen.tais.Adapter.Producto
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_registrar.*
 import org.json.JSONArray
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +37,8 @@ class MainActivity : AppCompatActivity() {
 
         RV_Productos.layoutManager = LinearLayoutManager(this)
 
+
+        //--------- para poder deslizar el item desde la derecha y poder eliminarlo
         var item = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -56,8 +56,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         ItemTouchHelper(item).attachToRecyclerView(RV_Productos)
-
+        //-----------------------------------------------------------------------------
     }
+    //----------- Funcion llamada despues de deslizar de derecha a izquierda
     fun eliminar(id:String)
     {
         val stringRequest=object : StringRequest(
@@ -81,18 +82,21 @@ class MainActivity : AppCompatActivity() {
         val queQue= Volley.newRequestQueue(this)
         queQue.add(stringRequest)
     }
+    //---------------------------------------
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main,menu)
 
         return true
 
     }
+    //---------Para el buscador en la parte superior y poder hacer la busqueda
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId)
         {
             R.id.buscar->
             {
-
+                //---------------Implementacion del evento SetOnQueryTextListener para poder saber que escribio en el buscador
                 val searchView = item.actionView as SearchView
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String): Boolean {
@@ -100,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onQueryTextChange(newText: String): Boolean {
+                        //Usar el filtro incorporado en el adaptador
                         adaptador.filter.filter(newText)
                         return false
                     }
@@ -109,14 +114,14 @@ class MainActivity : AppCompatActivity() {
         }
         return true
     }
-
+    //------------------------------------------------------
     override fun onStart() {
         super.onStart()
         adaptador.limpiar()
         data()
 
     }
-
+//funcion para solicitar los productos mediante la libreria Volley
     fun data()
     {
 
@@ -148,13 +153,14 @@ class MainActivity : AppCompatActivity() {
        
 
     }
+//-----------------------------------------------
 
-
+    //--------------Pasamos los datos obtenidos al adaptador ----------------
     fun adapter(productos: MutableList<Producto>)
     {
 
         adaptador.data(productos, baseContext)
         RV_Productos.adapter=adaptador
     }
-
+    //-----------------------------------------------
 }
